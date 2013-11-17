@@ -110,13 +110,18 @@
                     document.getElementById("unanswered").innerHTML = "";
                     $("#submitButton").removeClass('invalid').addClass('valid');
                 } else {
+                    document.getElementById("unanswered").innerHTML = "Unanswered questions present";
                     $("#submitButton").removeClass('valid').addClass('invalid');
                 }
             }
         }
 
         function validate() {
-
+            if (mode=="Manual") {
+                setSubmit(true);
+                return;
+            }
+            
             if (!validAnswers()) {
                 setSubmit(false);
                 return;
@@ -245,7 +250,6 @@
 
             if (FIRST) {
                 document.getElementById("data").innerHTML = getElements();
-                document.getElementById("unanswered").innerHTML = "Unanswered questions present";
                 activateElements();
                 validate();
                 FIRST = false;
@@ -417,7 +421,7 @@
                                     Mode:
                                     <select id="Mode" name="Mode" onChange='setFormForMode();'>
                                         <option>Automatic</option>
-                                        <!--		<option>Manual</option>  -->
+                                        <option>Manual</option>  
                                     </select>
                                     Team:
                                     <script>
@@ -463,15 +467,13 @@
                 mode = e.options[e.selectedIndex].text;
                 if(mode=="Automatic"){
                     document.getElementById("data").innerHTML=getElements();
-                    document.getElementById("Validation").setAttribute("style","display: inherit;");
                     activateElements();
                     validate();
                 }
                 else if(mode=="Manual"){
                     document.getElementById("data").innerHTML="Score: <input type='number' name='Score' min='0'><span class='old' id='Old_Score'></span>";
                     rulesArray=[];
-                    document.getElementById("Validation").setAttribute("style","display: none;");
-                    validate();
+                    setSubmit(true);
                 }
             }
             // Make button click happen with mousedown
